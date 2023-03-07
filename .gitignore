@@ -58,8 +58,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
-
+dblp-*.xml 
+*.dtd
 #####
 # Linux
 #####
