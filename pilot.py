@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+
 robotics_entries = []
 architecture_entries = []
 adaptive_entries = []
@@ -29,6 +30,8 @@ category_to_list = {
 }
 
 
+
+
 with open(input("csv input file name > "), 'r', encoding='utf-8', newline="") as csvfile:
     venue_reader = csv.DictReader(csvfile)
     #next(venue_reader) #skip header
@@ -39,7 +42,11 @@ with open(input("csv input file name > "), 'r', encoding='utf-8', newline="") as
 
 one_third_chunk = int(PILOT_SIZE/3)
 
-pilot_studies = list(np.random.choice(robotics_entries,one_third_chunk,replace=False)) + list(np.random.choice(architecture_entries,one_third_chunk,replace=False)) + list(np.random.choice(adaptive_entries,one_third_chunk,replace=False))
+robot_selection = list(np.random.choice(robotics_entries,one_third_chunk,replace=False))
+archi_selection = list(np.random.choice(architecture_entries,one_third_chunk,replace=False))
+adapt_selection = list(np.random.choice(adaptive_entries,one_third_chunk,replace=False))
+
+pilot_studies = robot_selection + archi_selection + adapt_selection
 
 np.random.shuffle(pilot_studies)
 
@@ -48,6 +55,26 @@ REVIEWER1 = pilot_studies[:one_third_chunk]
 REVIEWER2 = pilot_studies[one_third_chunk:2*one_third_chunk]
 REVIEWER3 = pilot_studies[2*one_third_chunk:]
 
-create_reviewer_file("reviewer1b",REVIEWER1)
-create_reviewer_file("reviewer2b",REVIEWER2)
-create_reviewer_file("reviewer3b",REVIEWER3)
+# create_reviewer_file("reviewer1b",REVIEWER1)
+# create_reviewer_file("reviewer2b",REVIEWER2)
+# create_reviewer_file("reviewer3b",REVIEWER3)
+
+#PILOT 2
+for selected in robot_selection: robotics_entries.remove(selected)
+for selected in archi_selection: architecture_entries.remove(selected)
+for selected in adapt_selection: adaptive_entries.remove(selected)
+
+robot_selection = list(np.random.choice(robotics_entries,one_third_chunk,replace=False))
+archi_selection = list(np.random.choice(architecture_entries,one_third_chunk,replace=False))
+adapt_selection = list(np.random.choice(adaptive_entries,one_third_chunk,replace=False))
+
+pilot_studies = robot_selection + archi_selection + adapt_selection
+np.random.shuffle(pilot_studies)
+
+REVIEWER1 = pilot_studies[:one_third_chunk]
+REVIEWER2 = pilot_studies[one_third_chunk:2*one_third_chunk]
+REVIEWER3 = pilot_studies[2*one_third_chunk:]
+
+create_reviewer_file("p2reviewer1b",REVIEWER1)
+create_reviewer_file("p2reviewer2b",REVIEWER2)
+create_reviewer_file("p2reviewer3b",REVIEWER3)
