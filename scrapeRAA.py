@@ -76,7 +76,7 @@ def iterate_xml(xmlfile):
             start_tag = None
             root.clear()
 
-def criteria(key, venue_list, title, counter, explain=False): 
+def criteria(key, venue_list, title, counter, explain=False, dblp_entry=None): 
     title_lowered = title.lower()
     title_keywords = venue_to_words[venue_list]
     category = ""
@@ -84,7 +84,7 @@ def criteria(key, venue_list, title, counter, explain=False):
         print("keywords " + str(title_keywords) + "found in " + str(title) + "is " + str(any(keyword in title for keyword in title_keywords)))
         print("key starts with " + str(venue_list) + "in " + str(key) + "is " + str(key.startswith(venue_list)))
     
-    return_value = (key.startswith(venue_list)) and any(keyword in title_lowered for keyword in title_keywords)
+    return_value = ((key.startswith(venue_list) or ((True) and key.startswith("conf/icse") and (dblp_entry is not None) and ("SEAMS" in dblp_entry.find('booktitle').text)) ) and any(keyword in title_lowered for keyword in title_keywords))
     if(return_value): 
         counter[0]+=1
         category =  venue_to_category[venue_list]
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
             match_robotics = criteria(key,RO_VENUES, title, ro_counter)
             match_software = criteria(key,SA_VENUES, title, sa_counter)
-            match_adaptive = criteria(key, SAS_VENUES, title, sas_counter)
+            match_adaptive = criteria(key, SAS_VENUES, title, sas_counter, dblp_entry=dblp_entry)
 
             matched_criteria = match_robotics or match_software or match_adaptive
             if(matched_criteria): #an any with extra steps to get the return value in a variable.
